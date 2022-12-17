@@ -227,6 +227,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pr-${{ env.cache-name }}-
             ${{ runner.os }}-pr-
+          architecture: armv7
       - uses: uraimo/run-on-arch-action@v2.3.0
         name: Run commands
         id: runcmd
@@ -263,6 +264,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pr-${{ env.cache-name }}-
             ${{ runner.os }}-pr-
+          architecture: armv7
       - uses: uraimo/run-on-arch-action@v2.3.0
         name: Run commands
         id: runcmd
@@ -301,6 +303,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pr-${{ env.cache-name }}-
             ${{ runner.os }}-pr-
+          architecture: armv7
       - uses: uraimo/run-on-arch-action@v2.3.0
         name: Run commands
         id: runcmd
