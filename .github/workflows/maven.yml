@@ -245,10 +245,9 @@ jobs:
           # Install dependencies
           install: |
             apt-get update -q -y
-            apt-get install wget gnupg2 software-properties-common -q -y
-            apt-get update -q -y
             apt-get install -q -y openjdk-8-jdk autoconf automake libtool make tar git cmake build-essential
           run: |
+            export MAVEN_OPTS="-Xmx2G"
             chmod +x ./mvnw
             ./mvnw -B -ntp clean package
 
