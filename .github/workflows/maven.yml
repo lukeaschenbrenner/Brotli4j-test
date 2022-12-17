@@ -247,7 +247,6 @@ jobs:
             apt-get update -q -y
             apt-get install -q -y openjdk-8-jdk autoconf automake libtool make tar git cmake build-essential
           run: |
-            export MAVEN_OPTS="-Xmx3G"
             chmod 775 ./mvnw
             ./mvnw -B -ntp clean package
 
