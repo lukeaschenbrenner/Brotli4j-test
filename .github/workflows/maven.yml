@@ -264,7 +264,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Linux-ArmV7-Build-JDK8
-          path: /home/runner/work/Brotli4j-test/
+          path: /home/runner/work/Brotli4j/
 
   Linux-ArmV7-Build-JDK11:
     runs-on: ubuntu-latest
