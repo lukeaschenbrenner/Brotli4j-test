@@ -1,5 +1,5 @@
 /*
- *    Copyright (c) 2020-2022, Aayush Atharva
+ *    Copyright (c) 2020-2023, Aayush Atharva
  *
  *    Brotli4j licenses this file to you under the
  *    Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ package com.aayushatharva.brotli4j.decoder;
 import com.aayushatharva.brotli4j.common.annotations.Local;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
-import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
 
 import java.io.IOException;

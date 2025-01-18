@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2020-2022, Aayush Atharva
+  Copyright (c) 2020-2023, Aayush Atharva
 
   Brotli4j licenses this file to you under the
   Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.aayushatharva.brotli4j</groupId>
         <artifactId>brotli4j-parent</artifactId>
-        <version>1.9.0</version>
+        <version>1.18.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -30,8 +30,12 @@
     <modules>
         <module>linux-x86_64</module>
         <module>linux-aarch64</module>
-		<module>linux-armv7</module>
+        <module>linux-armv7</module>
+        <module>linux-s390x</module>
+        <module>linux-ppc64le</module>
+        <module>linux-riscv64</module>
         <module>windows-x86_64</module>
+        <module>windows-aarch64</module>
         <module>osx-x86_64</module>
         <module>osx-aarch64</module>
     </modules>
@@ -39,7 +43,7 @@
     <dependencies>
         <dependency>
             <groupId>com.aayushatharva.brotli4j</groupId>
-            <artifactId>brotli4j</artifactId>
+            <artifactId>service</artifactId>
             <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -56,6 +60,32 @@
             </activation>
             <modules>
                 <module>linux-x86_64</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>linux-s390x</id>
+            <activation>
+                <os>
+                    <family>Linux</family>
+                    <arch>s390x</arch>
+                </os>
+            </activation>
+            <modules>
+                <module>linux-s390x</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>linux-ppc64le</id>
+            <activation>
+                <os>
+                    <family>Linux</family>
+                    <arch>ppc64le</arch>
+                </os>
+            </activation>
+            <modules>
+                <module>linux-ppc64le</module>
             </modules>
         </profile>
 
@@ -86,6 +116,19 @@
         </profile>
 
         <profile>
+            <id>linux-riscv64</id>
+            <activation>
+                <os>
+                    <family>Linux</family>
+                    <arch>riscv64</arch>
+                </os>
+            </activation>
+            <modules>
+                <module>linux-riscv64</module>
+            </modules>
+        </profile>
+
+        <profile>
             <id>windows-x86_64</id>
             <activation>
                 <os>
@@ -95,6 +138,19 @@
             </activation>
             <modules>
                 <module>windows-x86_64</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>windows-aarch64</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                    <arch>aarch64</arch>
+                </os>
+            </activation>
+            <modules>
+                <module>windows-aarch64</module>
             </modules>
         </profile>
 
@@ -130,11 +186,14 @@
                 <module>linux-x86_64</module>
                 <module>linux-aarch64</module>
                 <module>linux-armv7</module>
+                <module>linux-s390x</module>
+                <module>linux-ppc64le</module>
+                <module>linux-riscv64</module>
                 <module>windows-x86_64</module>
+                <module>windows-aarch64</module>
                 <module>osx-x86_64</module>
                 <module>osx-aarch64</module>
             </modules>
         </profile>
     </profiles>
-
 </project>

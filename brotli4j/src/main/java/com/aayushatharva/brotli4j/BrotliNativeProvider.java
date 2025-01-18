@@ -1,13 +1,25 @@
 package com.aayushatharva.brotli4j;
 
+import com.aayushatharva.brotli4j.common.annotations.Internal;
+
 /**
- * A service interface that signals that an implementor jar contains a native lib.
+ * @deprecated This interface is NO-OP now. It is superseded by {@link com.aayushatharva.brotli4j.service.BrotliNativeProvider}.
+ * However, we cannot remove this interface because it is part of the public API.
+ * <p>
+ * Also, this is an Internal API and should not be used by external users.
  */
+@Deprecated
+@Internal
 public interface BrotliNativeProvider {
 
     /**
-     * Gives the name of the platform that this provider contains a native brotli lib for
-     * @return The name of the native, e.g. linux-x86_64 or osx-aarch64
+     * Do not use this method. It is superseded by {@link com.aayushatharva.brotli4j.service.BrotliNativeProvider#platformName()}.
+     * <p>
+     * This method is kept for backward compatibility. It will be removed in the future.
+     * <p>
      */
-    String platformName();
+    @Deprecated
+    default String platformName() {
+        throw new UnsupportedOperationException("This method is superseded by com.aayushatharva.brotli4j.service.BrotliNativeProvider#platformName()");
+    }
 }

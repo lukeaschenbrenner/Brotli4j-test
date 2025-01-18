@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2020-2022, Aayush Atharva
+  Copyright 2020-2023, Aayush Atharva
 
   Brotli4j licenses this file to you under the
   Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@
     <groupId>com.aayushatharva.brotli4j</groupId>
     <artifactId>brotli4j-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.9.0</version>
+    <version>1.18.0</version>
 
     <name>Brotli4j</name>
     <description>Brotli4j provides Brotli compression and decompression for Java.</description>
@@ -55,7 +55,8 @@
     <modules>
         <module>natives</module>
         <module>brotli4j</module>
-        <module>brotli4j-tests</module>
+        <module>service</module>
+        <module>all</module>
     </modules>
 
     <properties>
@@ -64,7 +65,20 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <overwriteExistingFiles>true</overwriteExistingFiles>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>jdk9+</id>
+            <activation>
+                <jdk>[9,)</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.release>8</maven.compiler.release>
+            </properties>
+        </profile>
+    </profiles>
 
     <distributionManagement>
         <snapshotRepository>
@@ -82,7 +96,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-buffer</artifactId>
-            <version>4.1.86.Final</version>
+            <version>4.1.116.Final</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
@@ -91,7 +105,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.0</version>
+            <version>5.11.4</version>
             <scope>test</scope>
         </dependency>
 
@@ -99,7 +113,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.0</version>
+            <version>5.11.4</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -108,8 +122,14 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.4.2</version>
                 <configuration>
                     <archive>
                         <manifestEntries>
@@ -122,16 +142,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
-				<configuration>
-					<argLine>-Xmx2G</argLine>
-				</configuration>
+                <version>3.5.2</version>
+                <configuration>
+                    <argLine>-Xmx2G -Xcheck:jni</argLine>
+                </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.3.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -145,7 +165,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.11.2</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -159,7 +179,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
+                <version>1.7.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
@@ -172,7 +192,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
+                <version>3.2.7</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
