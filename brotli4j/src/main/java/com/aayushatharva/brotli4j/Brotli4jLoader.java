@@ -34,50 +34,39 @@ public class Brotli4jLoader {
 
     static {
         Throwable cause = null;
-
-        String customPath = System.getProperty("brotli4j.library.path");
-
-        if (customPath != null) {
+        try {
+            System.loadLibrary("brotli");
+        } catch (Throwable t) {
             try {
-                System.load(customPath);
+                String nativeLibName = System.mapLibraryName("brotli");
+                String platform = getPlatform();
+                String libPath = "/lib/" + platform + "/" + nativeLibName;
+
+                File tempDir = new File(System.getProperty("java.io.tmpdir"), "com_aayushatharva_brotli4j_" + System.nanoTime());
+                tempDir.mkdir();
+                tempDir.deleteOnExit();
+
+                File tempFile = new File(tempDir, nativeLibName);
+
+                Class<?> loaderClassToUse = Brotli4jLoader.class; // Use this as a fallback for non-JPMS contexts
+                // In Java9+ with JPMS enabled, we need a class in the jar that contains the file to be able to access its content
+                ServiceLoader<BrotliNativeProvider> nativeProviders = ServiceLoader.load(BrotliNativeProvider.class, Brotli4jLoader.class.getClassLoader());
+                for (BrotliNativeProvider nativeProvider : nativeProviders) {
+                    if (nativeProvider.platformName().equals(platform)) {
+                        loaderClassToUse = nativeProvider.getClass();
+                        break;
+                    }
+                }
+                try (InputStream in = loaderClassToUse.getResourceAsStream(libPath)) {
+                    Files.copy(in, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (Throwable throwable) {
+                    tempFile.delete();
+                    throw throwable;
+                }
+
+                System.load(tempFile.getAbsolutePath());
             } catch (Throwable throwable) {
                 cause = throwable;
-            }
-        } else {
-            try {
-                System.loadLibrary("brotli");
-            } catch (Throwable t) {
-                try {
-                    String nativeLibName = System.mapLibraryName("brotli");
-                    String platform = getPlatform();
-                    String libPath = "/lib/" + platform + "/" + nativeLibName;
-
-                    File tempDir = new File(System.getProperty("java.io.tmpdir"), "com_aayushatharva_brotli4j_" + System.nanoTime());
-                    tempDir.mkdir();
-                    tempDir.deleteOnExit();
-
-                    File tempFile = new File(tempDir, nativeLibName);
-
-                    Class<?> loaderClassToUse = Brotli4jLoader.class; // Use this as a fallback for non-JPMS contexts
-                    // In Java9+ with JPMS enabled, we need a class in the jar that contains the file to be able to access its content
-                    ServiceLoader<BrotliNativeProvider> nativeProviders = ServiceLoader.load(BrotliNativeProvider.class, Brotli4jLoader.class.getClassLoader());
-                    for (BrotliNativeProvider nativeProvider : nativeProviders) {
-                        if (nativeProvider.platformName().equals(platform)) {
-                            loaderClassToUse = nativeProvider.getClass();
-                            break;
-                        }
-                    }
-                    try (InputStream in = loaderClassToUse.getResourceAsStream(libPath)) {
-                        Files.copy(in, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    } catch (Throwable throwable) {
-                        tempFile.delete();
-                        throw throwable;
-                    }
-
-                    System.load(tempFile.getAbsolutePath());
-                } catch (Throwable throwable) {
-                    cause = throwable;
-                }
             }
         }
 
